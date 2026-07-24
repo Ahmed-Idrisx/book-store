@@ -10,6 +10,7 @@ import {
   type UpdateProfilePayload,
 } from "./api";
 import { tokenStorage } from "@/lib/api-client";
+import { useCallback } from "react";
 
 // work when only when there is a token
 export function useProfile(enabled: boolean) {
@@ -76,3 +77,32 @@ export function useUpdateProfile() {
     },
   });
 }
+
+export const useResetSession = () => {
+  const saveEmail = useCallback((email: string) => {
+    sessionStorage.setItem("reset_email", email);
+  }, []);
+
+  const saveOtp = useCallback((otp: string) => {
+    sessionStorage.setItem("reset_otp", otp);
+  }, []);
+
+  const getSession = useCallback(() => {
+    return {
+      email: sessionStorage.getItem("reset_email"),
+      otp: sessionStorage.getItem("reset_otp"),
+    };
+  }, []);
+
+  const clear = useCallback(() => {
+    sessionStorage.removeItem("reset_email");
+    sessionStorage.removeItem("reset_otp");
+  }, []);
+
+  return {
+    saveEmail,
+    saveOtp,
+    getSession,
+    clear,
+  };
+};
