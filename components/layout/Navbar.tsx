@@ -1,6 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/features/cart/hooks";
+import { useWishlist } from "@/features/wishlist/hooks";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,9 +24,11 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
-  const wishlistCount = 3; // TODO: from wishlist cache
-  const cartCount = 5; // TODO: from cart cache
   const { user, logout } = useAuth();
+  const { data: cart } = useCart(!!user);
+  const { data: wishlist } = useWishlist(!!user);
+  const cartCount = cart?.items.reduce((sum, item) => sum + item.qty, 0) ?? 0;
+  const wishlistCount = wishlist?.length ?? 0;
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -87,7 +91,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-1030  transition-[background-color] duration-400 ease-in-out ${
+      className={`fixed inset-x-0 top-0 z-1030  transition-[background-color] duration-400 ease-in-out  ${
         scrolled ? "bg-brand-night" : "backdrop-blur-xs"
       }`}
     >
@@ -264,7 +268,7 @@ const Navbar = () => {
                   Log in
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/register"
                   className="w-fit whitespace-nowrap rounded-lg border border-brand-pink bg-white px-4 py-2.5 text-brand-pink font-semibold transition-all hover:text-brand-pink-dark"
                 >
                   Sign Up
