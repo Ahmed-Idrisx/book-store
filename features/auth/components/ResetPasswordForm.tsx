@@ -16,21 +16,30 @@ const ResetPasswordForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [completed, setCompleted] = useState(false);
 
-  const { email, otp } = resetSession.getSession();
+  const [session, setSession] = useState<{
+    email: string | null;
+    otp: string | null;
+  } | null>(null);
 
   useEffect(() => {
-    if (completed) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSession(resetSession.getSession());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    if (!email || !otp) {
+  useEffect(() => {
+    if (completed || session === null) return;
+
+    if (!session.email || !session.otp) {
       toast.error("Please start the reset process again");
       router.push("/forget-password");
     }
-  }, [completed, email, otp, router]);
+  }, [completed, router, session]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email || !otp) return;
+    if (!session?.email || !session?.otp) return;
 
     if (!password || !confirmPassword) {
       toast.error("Please fill in both fields");
@@ -49,8 +58,8 @@ const ResetPasswordForm = () => {
 
     try {
       const res = await resetPasswordMutation.mutateAsync({
-        email,
-        otp,
+        email: session.email,
+        otp: session.otp,
         password,
         password_confirmation: confirmPassword,
       });
@@ -67,7 +76,9 @@ const ResetPasswordForm = () => {
     }
   };
 
-  if (!email || !otp) return null;
+  if (session === null) return null;
+
+  if (!session.email || !session.otp) return null;
 
   return (
     <>
