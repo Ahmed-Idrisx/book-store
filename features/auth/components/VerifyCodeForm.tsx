@@ -18,8 +18,17 @@ const VerifyCodeForm = () => {
   const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
-  const { email } = resetSession.getSession();
+  const [email, setEmail] = useState<string | null>(null);
+
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setEmail(resetSession.getSession().email);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (email === null) return;
+
     if (!email) {
       toast.error("Please request a reset code first");
       router.push("/forget-password");
