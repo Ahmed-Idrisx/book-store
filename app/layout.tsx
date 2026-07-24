@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Providers>
           <Navbar />
-          <main className="min-h-[100vh]">{children}</main>
+          <main className="min-h-[80vh]">{children}</main>
           <Footer />
         </Providers>
       </body>
