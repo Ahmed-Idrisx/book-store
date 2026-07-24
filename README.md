@@ -32,6 +32,25 @@ lib/                 → api client, query client, utils
 
 Note: `components/<feature>/` was the pattern used for early features (home). Starting from the Books module onward, feature-specific UI lives inside `features/<name>/components/` for tighter colocation.
 
+## Screenshots
+
+| Homepage                                   | Books Listing                                        |
+| ------------------------------------------ | ---------------------------------------------------- |
+| ![Homepage](docs/screenshots/homepage.png) | ![Books Listing](docs/screenshots/books-listing.png) |
+
+| Cart                               | Wishlist                                   |
+| ---------------------------------- | ------------------------------------------ |
+| ![Cart](docs/screenshots/cart.png) | ![Wishlist](docs/screenshots/wishlist.png) |
+
+| Checkout                                   |
+| ------------------------------------------ |
+| ![Checkout](docs/screenshots/checkout.png) |
+
+## Known Limitations
+
+- **Coupons**: UI is implemented, but not functional yet — backend endpoint not available.
+- **Orders page**: UI is implemented, but not functional yet — backend endpoint not available.
+
 ## Getting started
 
 ```bash
